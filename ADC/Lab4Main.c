@@ -27,9 +27,25 @@
 #include "ADCSWTrigger.h"
 #include "tm4c123gh6pm.h"
 #include "PLL.h"
+#include "Nokia5110.h"
 
 int period = 0; // set value that will give 40Hz / 25 ms
 char sample = 0;
+// {adc, distance}
+// 70 - 10 cm
+//int adcTable[] = {548,583,636,692,732,791,857,887,1059,1343,1730,2276,3385};
+int adcTable[] = {4095, 3385, 2276, 1730, 1343, 1059, 887, 857, 791, 732, 692, 636, 583, 548, 0};
+int distTable[] = {0, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55, 60, 65, 70, 999};
+double distance = 0;
+	int calibration = 0;
+	int a = 0;
+	int b = 0;
+	int ia = 0;
+	int ib = 0;
+  int m = 0;
+  int l = 0;
+int i;
+int f;
 
 void DisableInterrupts(void); // Disable interrupts
 void EnableInterrupts(void);  // Enable interrupts
@@ -58,17 +74,62 @@ int main(void){unsigned long volatile delay;
   GPIO_PORTF_PCTL_R = (GPIO_PORTF_PCTL_R&0xFFFFF0FF)+0x00000000;
   GPIO_PORTF_AMSEL_R = 0;               // disable analog functionality on PF
 	SysTick_Init();
+	PLL_Init();                           // set system clock to 50 MHz
+  Nokia5110_Init(); 
+  Nokia5110_Clear();
 	
   while(1){
     if(sample){
+		sample = 0;	
     ADCvalue = ADC0_InSeq3(); // Ensure sampler works
-		GPIO_PORTF_DATA_R ^= 0x04;
-		sample = 0;
+
+		// Find distance
+		for(i = 14; i < 0; i = i - 1){
+			if(ADCvalue > adcTable[i]){
+				a = adcTable[i];
+				ia = i;
+			}
+			else{
+				break;
+			}
 		}
-		// LCD Code Here
+		
+		for(f = 0; f < 15; f = f + 1){
+			if(ADCvalue < adcTable[f]){
+				b = adcTable[f];
+				ib = f;
+			}
+			else {
+				break;
+			}
+		}
+		
+		
+		
+		 m = a - b;
+		 l = a - ADCvalue;
+		
+		distance = distTable[ia] + (l/m * 5);
+		
+		GPIO_PORTF_DATA_R ^= 0x04;
+		}
+		
+		Nokia5110_SetCursor(0,0);
+    Nokia5110_OutString("ADC Output:");
+		Nokia5110_SetCursor(0,1);
+		Nokia5110_OutUDec(ADCvalue);
+		Nokia5110_SetCursor(0,2);
+		Nokia5110_OutString("Distance (LU):");
+		Nokia5110_SetCursor(0,3);
+		Nokia5110_OutUDec(distance);
+		Nokia5110_SetCursor(0,4);
+		Nokia5110_OutString("Calibration:");
+		Nokia5110_SetCursor(0,5);
+		Nokia5110_OutUDec(calibration);
   }
 }
 
+// Can sample at 20 or 10 Hz also
 void SysTick_Init(void){
 	NVIC_ST_CTRL_R = 0;         // disable SysTick during setup
   NVIC_ST_RELOAD_R = 2000000-1;// reload value
@@ -81,3 +142,5 @@ void SysTick_Init(void){
 void SysTick_Handler(){
 	sample = 1;
 }
+
+// Current equation: y = (39,629.72122/x) - 4.15302219

@@ -425,11 +425,6 @@
               <FileType>1</FileType>
               <FilePath>.\Lab4Main.c</FilePath>
             </File>
-            <File>
-              <FileName>Nokia5110.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\Nokia5110.c</FilePath>
-            </File>
           </Files>
         </Group>
       </Groups>

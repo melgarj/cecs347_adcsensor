@@ -4,7 +4,10 @@ F (.\ADCSWTrigger.c)(0x5BCE77C3)(-c --cpu Cortex-M4 -D__EVAL -g -O0 --apcs=inter
 I (tm4c123gh6pm.h)(0x5B97078A)
 F (.\PLL.c)(0x52640FF6)(-c --cpu Cortex-M4 -D__EVAL -g -O0 --apcs=interwork --split_sections -I.. -I..\..\..-I "C:\Tools\Keil u4\ARM\RV31\INC"-I "C:\Tools\Keil u4\ARM\CMSIS\Include"-I "C:\Tools\Keil u4\ARM\Inc\Luminary"-Drvmdk -DPART_LM4F120H5QR-o .\pll.o --omf_browse .\pll.crf --depend .\pll.d)
 I (PLL.h)(0x52640FF6)
-F (.\Lab4Main.c)(0x5BCE7992)(-c --cpu Cortex-M4 -D__EVAL -g -O0 --apcs=interwork --split_sections -I.. -I..\..\..-I "C:\Tools\Keil u4\ARM\RV31\INC"-I "C:\Tools\Keil u4\ARM\CMSIS\Include"-I "C:\Tools\Keil u4\ARM\Inc\Luminary"-Drvmdk -DPART_LM4F120H5QR-o .\lab4main.o --omf_browse .\lab4main.crf --depend .\lab4main.d)
+F (.\Lab4Main.c)(0x5BD0C6A9)(-c --cpu Cortex-M4 -D__EVAL -g -O0 --apcs=interwork --split_sections -I.. -I..\..\..-I "C:\Tools\Keil u4\ARM\RV31\INC"-I "C:\Tools\Keil u4\ARM\CMSIS\Include"-I "C:\Tools\Keil u4\ARM\Inc\Luminary"-Drvmdk -DPART_LM4F120H5QR-o .\lab4main.o --omf_browse .\lab4main.crf --depend .\lab4main.d)
 I (ADCSWTrigger.h)(0x52646366)
 I (tm4c123gh6pm.h)(0x5B97078A)
 I (PLL.h)(0x52640FF6)
+I (Nokia5110.h)(0x5BB0D4F5)
+F (.\Nokia5110.c)(0x5B3A5DA0)(-c --cpu Cortex-M4 -D__EVAL -g -O0 --apcs=interwork --split_sections -I.. -I..\..\..-I "C:\Tools\Keil u4\ARM\RV31\INC"-I "C:\Tools\Keil u4\ARM\CMSIS\Include"-I "C:\Tools\Keil u4\ARM\Inc\Luminary"-Drvmdk -DPART_LM4F120H5QR-o .\nokia5110.o --omf_browse .\nokia5110.crf --depend .\nokia5110.d)
+I (Nokia5110.h)(0x5BB0D4F5)
