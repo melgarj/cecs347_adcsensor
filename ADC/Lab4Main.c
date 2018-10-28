@@ -36,14 +36,14 @@ char sample = 0;
 //int adcTable[] = {548,583,636,692,732,791,857,887,1059,1343,1730,2276,3385};
 int adcTable[] = {4095, 3385, 2276, 1730, 1343, 1059, 887, 857, 791, 732, 692, 636, 583, 548, 0};
 int distTable[] = {0, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55, 60, 65, 70, 999};
-double distance = 0;
-	int calibration = 0;
-	int a = 0;
-	int b = 0;
+float distance = 0;
+	float calibration = 0;
+  float a = 0;
+	float b = 0;
 	int ia = 0;
 	int ib = 0;
-  int m = 0;
-  int l = 0;
+  float m = 0;
+  float l = 0;
 int i;
 int f;
 
@@ -82,7 +82,7 @@ int main(void){unsigned long volatile delay;
     if(sample){
 		sample = 0;	
     ADCvalue = ADC0_InSeq3(); // Ensure sampler works
-
+	
 		// Find distance
 		for(i = 14; i < 0; i = i - 1){
 			if(ADCvalue > adcTable[i]){
@@ -103,17 +103,15 @@ int main(void){unsigned long volatile delay;
 				break;
 			}
 		}
+		 m = b - a;
+		 l = b - ADCvalue;
+		
+		distance = distTable[ib] + (l/m * 5);
+		calibration = (39629.72122/ADCvalue) - 4.15302219;
 		
 		
-		
-		 m = a - b;
-		 l = a - ADCvalue;
-		
-		distance = distTable[ia] + (l/m * 5);
-		
+
 		GPIO_PORTF_DATA_R ^= 0x04;
-		}
-		
 		Nokia5110_SetCursor(0,0);
     Nokia5110_OutString("ADC Output:");
 		Nokia5110_SetCursor(0,1);
@@ -126,6 +124,7 @@ int main(void){unsigned long volatile delay;
 		Nokia5110_OutString("Calibration:");
 		Nokia5110_SetCursor(0,5);
 		Nokia5110_OutUDec(calibration);
+	}
   }
 }
 
