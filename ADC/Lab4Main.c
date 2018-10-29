@@ -44,6 +44,7 @@ float distance = 0;
 	int ib = 0;
   float m = 0;
   float l = 0;
+	float lm;
 int i;
 int f;
 
@@ -84,13 +85,13 @@ int main(void){unsigned long volatile delay;
     ADCvalue = ADC0_InSeq3(); // Ensure sampler works
 	
 		// Find distance
-		for(i = 14; i < 0; i = i - 1){
+		for(i = 0; i < 15; i = i + 1){
 			if(ADCvalue > adcTable[i]){
-				a = adcTable[i];
-				ia = i;
+				break;
 			}
 			else{
-				break;
+				a = adcTable[i+1];
+				ia = i+1;
 			}
 		}
 		
@@ -105,8 +106,9 @@ int main(void){unsigned long volatile delay;
 		}
 		 m = b - a;
 		 l = b - ADCvalue;
+		lm = l / m ;
 		
-		distance = distTable[ib] + (l/m * 5);
+		distance = distTable[ib] + (lm * 5);
 		calibration = (39629.72122/ADCvalue) - 4.15302219;
 		
 		
